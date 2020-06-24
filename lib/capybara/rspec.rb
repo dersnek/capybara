@@ -25,5 +25,8 @@ RSpec.configure do |config|
       Capybara.current_driver = Capybara.javascript_driver if example.metadata[:js]
       Capybara.current_driver = example.metadata[:driver] if example.metadata[:driver]
     end
+
+    wsl = `if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null ; then printf "true"; fi`
+    Capybara.wsl = true if wsl == "true"
   end
 end

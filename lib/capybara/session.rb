@@ -708,7 +708,10 @@ module Capybara
     # @param [String] path  the path to where it should be saved
     #
     def save_and_open_page(path = nil)
-      save_page(path).tap { |s_path| open_file(s_path) }
+      save_page(path).tap do |s_path|
+        s_path.gsub! '/home/', 'file://///wsl$/Ubuntu/home/' if Capybara.wsl
+        open_file(s_path)
+      end
     end
 
     ##
@@ -723,7 +726,10 @@ module Capybara
     # @param [Hash] options   a customizable set of options
     # @return [String]        the path to which the file was saved
     def save_screenshot(path = nil, **options)
-      prepare_path(path, 'png').tap { |p_path| driver.save_screenshot(p_path, **options) }
+      prepare_path(path, 'png').tap do |p_path|
+        p_path.gsub! '/home/', 'file://///wsl$/Ubuntu/home/' if Capybara.wsl
+        driver.save_screenshot(p_path, **options)
+      end
     end
 
     ##
@@ -738,7 +744,10 @@ module Capybara
     # @param [Hash] options   a customizable set of options
     #
     def save_and_open_screenshot(path = nil, **options)
-      save_screenshot(path, **options).tap { |s_path| open_file(s_path) } # rubocop:disable Lint/Debugger
+      save_screenshot(path, **options).tap do |s_path|
+        s_path.gsub! '/home/', 'file://///wsl$/Ubuntu/home/' if Capybara.wsl
+        open_file(s_path)
+      end
     end
 
     def document

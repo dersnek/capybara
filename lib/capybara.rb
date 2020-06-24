@@ -413,6 +413,26 @@ module Capybara
       config.session_options
     end
 
+    ##
+    #
+    # @return [Boolean]    Is Capybara running in WSL environment
+    #
+    def wsl
+      if threadsafe
+        Thread.current['capybara_wsl']
+      else
+        @wsl
+      end || false
+    end
+
+    def wsl=(name)
+      if threadsafe
+        Thread.current['capybara_wsl'] = name
+      else
+        @wsl = name
+      end
+    end
+
   private
 
     def config
